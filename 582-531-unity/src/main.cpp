@@ -6,10 +6,13 @@ M5_PbHub myPbHub;
 MicroOscSlip<128> monOsc(&Serial);
 CRGB atomPixel;
 #define BTN_LED 27
+#include <VL53L0X.h>
+VL53L0X  myTOF;
 
 void setup() {
   FastLED.addLeds<WS2812,BTN_LED,GRB>( & atomPixel, 1);
   Wire.begin();
+  myTOF.init();
   myPbHub.begin();
   Serial.begin(115200);
 
@@ -29,6 +32,8 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
   int maLectureAngle = myPbHub.analogRead( 0 );
+  int mesure = myTOF.readRangeSingleMillimeters();
   monOsc.sendInt("/angle",maLectureAngle);
+  monOsc.sendInt("/tuff",mesure);
   delay(100);
 }

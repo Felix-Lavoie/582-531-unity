@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using extOSC;
 
-public class oscCube : MonoBehaviour
+public class playerOsc : MonoBehaviour
 {
     public extOSC.OSCReceiver oscReceiver;
     public static float Proportion(float value, float inputMin, float inputMax, float outputMin, float outputMax)
@@ -30,9 +30,9 @@ void TraiterOscAngle(OSCMessage message)
 
     // EXEMPLE : utiliser la valeur pour appliquer une rotation
     // Adapter proportionnellement la valeur reçue
-    float angle = Proportion(value, 0, 4095, -180, 180);
+    float position = Proportion(value, 0, 225, -4, 4);
     // Appliquer la rotation à l’objet
-    transform.rotation = Quaternion.Euler(0, angle, 0);
+    transform.position = new Vector3(transform.position.x, position, transform.position.z);
 }
 
     // Start is called before the first frame update
@@ -40,7 +40,7 @@ void TraiterOscAngle(OSCMessage message)
     {
 
         
-        oscReceiver.Bind("/angle", TraiterOscAngle);
+        oscReceiver.Bind("/tuff", TraiterOscAngle);
         
     }
 
@@ -50,5 +50,3 @@ void TraiterOscAngle(OSCMessage message)
         
     }
 }
-
-
