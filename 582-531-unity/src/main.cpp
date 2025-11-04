@@ -1,13 +1,17 @@
 #include <Arduino.h>
 #include <FastLED.h>
 #include <M5_PbHub.h>
+#include <MicroOscSlip.h>
 M5_PbHub myPbHub;
-//CRGB monPixel;
+MicroOscSlip<128> monOsc(&Serial);
 CRGB atomPixel;
 #define BTN_LED 27
 
 void setup() {
   FastLED.addLeds<WS2812,BTN_LED,GRB>( & atomPixel, 1);
+  Wire.begin();
+  myPbHub.begin();
+  Serial.begin(115200);
 
   atomPixel = CRGB(255,0,0); // ROUGE
   FastLED.show();
@@ -24,5 +28,7 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
+  int maLectureAngle = myPbHub.analogRead( 0 );
+  monOsc.sendInt("/angle",maLectureAngle);
   delay(100);
 }
